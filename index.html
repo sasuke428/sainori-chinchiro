@@ -75,6 +75,7 @@ h1 { margin: 0; font-size: clamp(30px, 8vw, 54px); line-height: 1.05; }
   overflow: hidden;
 }
 .rim {
+  display: none;
   position: absolute;
   top: 18px;
   left: 42px;
@@ -169,11 +170,13 @@ button:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
 .card.active { outline: 3px solid rgba(244,201,106,.6); }
 .card h2 { margin: 0 0 4px; font-size: 32px; color: var(--gold); overflow-wrap: anywhere; }
 .turn { color: var(--muted); font-size: 13px; font-weight: 900; }
-.roll { font-size: 40px; font-weight: 900; letter-spacing: .08em; margin-top: 6px; }
-.rank { color: var(--muted); margin-top: 6px; font-weight: 800; }
+.roll { font-size: 24px; font-weight: 900; letter-spacing: .08em; margin-top: 8px; color: var(--muted); }
+.rank { color: var(--gold); margin-top: 8px; font-size: 34px; line-height: 1.05; font-weight: 950; }
 .card.win { outline: 3px solid var(--gold); }
 .card.lose { opacity: .72; }
-.result { margin-top: 14px; text-align: center; }
+.result { margin-top: 14px; text-align: center; transition: transform .2s ease, box-shadow .2s ease; }
+.result.final { border-color: rgba(244,201,106,.55); box-shadow: 0 0 0 3px rgba(244,201,106,.12), 0 16px 34px rgba(0,0,0,.28); transform: translateY(-1px); }
+.result.final .winner { font-size: clamp(30px, 6vw, 46px); color: var(--gold); text-shadow: 0 2px 16px rgba(244,201,106,.2); }
 .winner { font-size: 24px; font-weight: 900; }
 .ratio { margin-top: 8px; font-size: 20px; color: var(--gold); font-weight: 900; }
 .note { margin-top: 8px; color: var(--muted); }
@@ -181,7 +184,8 @@ button:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
 .rules h3, .odds h3 { color: var(--cream); margin: 0 0 10px; }
 .rules p { margin: 6px 0; }
 
-.odds { margin-top: 14px; }
+.odds { margin-top: 14px; transition: opacity .2s ease, filter .2s ease; }
+.odds.muted-after-result { opacity: .45; filter: saturate(.65); }
 .hidden { display: none; }
 .odds-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
 .summary-item { border-radius: 18px; background: rgba(244,201,106,.12); border: 1px solid rgba(244,201,106,.22); padding: 13px 10px; text-align: center; }
@@ -217,9 +221,9 @@ button:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
 <body>
   <main class="app">
     <section class="hero">
-      <p class="eyebrow">456 Dice Chinchiro</p>
+      <p class="eyebrow">さい🎲のり</p>
       <h1>さいのり専用チンチロ</h1>
-      <p class="desc">先攻が振ったあと、後攻の各目の出現率と、その目が出た場合の報酬比率を確認できます。</p>
+      <p class="desc">チンチロで比率を決める新感覚ノリ打ち</p>
     </section>
 
     <section class="setup" id="setupBox">
@@ -308,6 +312,7 @@ const rollA = document.getElementById('rollA');
 const rollB = document.getElementById('rollB');
 const rankA = document.getElementById('rankA');
 const rankB = document.getElementById('rankB');
+const resultBox = document.getElementById('resultBox');
 const winnerText = document.getElementById('winnerText');
 const ratioText = document.getElementById('ratioText');
 const noteText = document.getElementById('noteText');
@@ -485,6 +490,8 @@ async function rollFirst() {
   nameAInput.disabled = true;
   nameBInput.disabled = true;
   oddsBox.classList.add('hidden');
+  oddsBox.classList.remove('muted-after-result');
+  resultBox.classList.remove('final');
   cardA.classList.add('active');
   cardB.classList.remove('active', 'win', 'lose');
   cardA.classList.remove('win', 'lose');
@@ -526,6 +533,8 @@ function renderResult(aDice, bDice) {
   rollB.textContent = bDice.join('・');
   rankA.textContent = aEval.label;
   rankB.textContent = bEval.label;
+  resultBox.classList.add('final');
+  oddsBox.classList.add('muted-after-result');
 
   cardA.classList.remove('active', 'win', 'lose');
   cardB.classList.remove('active', 'win', 'lose');
@@ -563,6 +572,8 @@ function reset() {
   cardB.classList.remove('active', 'win', 'lose');
   cardA.classList.remove('win', 'lose');
   oddsBox.classList.add('hidden');
+  oddsBox.classList.remove('muted-after-result');
+  resultBox.classList.remove('final');
   startBtn.textContent = '先攻が振る';
   startBtn.disabled = false;
   nextBtn.disabled = true;
