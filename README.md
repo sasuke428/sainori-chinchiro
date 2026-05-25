@@ -1,1 +1,0 @@
-# sainori-chinchiro
