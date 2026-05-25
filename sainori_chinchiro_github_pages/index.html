@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>さいのり専用チンチロ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <p class="eyebrow">456 Dice Chinchiro</p>
+      <h1>さいのり専用チンチロ</h1>
+      <p class="desc">先攻が振ったあと、後攻の各目の出現率と、その目が出た場合の報酬比率を確認できます。</p>
+    </section>
+
+    <section class="setup" id="setupBox">
+      <label>
+        <span>先攻プレイヤー</span>
+        <input id="nameA" type="text" value="" placeholder="名前を入力" maxlength="12" autocomplete="off" />
+      </label>
+      <label>
+        <span>後攻プレイヤー</span>
+        <input id="nameB" type="text" value="" placeholder="名前を入力" maxlength="12" autocomplete="off" />
+      </label>
+    </section>
+
+    <section class="bowl-wrap" aria-label="どんぶりとサイコロ">
+      <div class="bowl">
+        <div class="rim"></div>
+        <div class="dice-stage" id="diceStage">
+          <div class="dice a" id="die1" data-face="4"></div>
+          <div class="dice b" id="die2" data-face="5"></div>
+          <div class="dice c" id="die3" data-face="6"></div>
+        </div>
+        <div class="shadow"></div>
+      </div>
+    </section>
+
+    <section class="controls">
+      <button id="startBtn" class="start-btn">先攻が振る</button>
+      <button id="nextBtn" class="next-btn" disabled>プレイヤーチェンジして後攻が振る</button>
+      <button id="resetBtn" class="reset-btn">リセット</button>
+    </section>
+
+    <section class="players">
+      <article class="card active" id="cardA">
+        <h2 id="labelA">先攻</h2>
+        <div class="turn">先攻</div>
+        <div class="roll" id="rollA">-</div>
+        <div class="rank" id="rankA">待機中</div>
+      </article>
+      <article class="card" id="cardB">
+        <h2 id="labelB">後攻</h2>
+        <div class="turn">後攻</div>
+        <div class="roll" id="rollB">-</div>
+        <div class="rank" id="rankB">待機中</div>
+      </article>
+    </section>
+
+    <section class="result" id="resultBox">
+      <div class="winner" id="winnerText">名前を確認して、先攻から振ってください</div>
+      <div class="ratio" id="ratioText">報酬比率：-</div>
+      <div class="note" id="noteText">456サイは4・5・6だけが出るサイコロです。</div>
+    </section>
+
+    <section class="odds hidden" id="oddsBox">
+      <h3 id="oddsTitle">後攻が振る前の出現率・報酬比率</h3>
+      <div class="odds-summary" id="oddsSummary"></div>
+      <div class="odds-grid" id="oddsGrid"></div>
+      <p class="odds-note" id="oddsNote"></p>
+    </section>
+
+    <section class="rules">
+      <h3>判定ルール</h3>
+      <p>強さ：ゾロ目（4・5・6は同列） ＞ 456 ＞ 6 ＞ 5 ＞ 4</p>
+      <p>報酬比率：ゾロ目vs456=2:1 / ゾロ目vs6・5・4=99:1 / 456vs6・5・4=3:1 / 6vs5・4、5vs4=2:1 / 同格=1:1</p>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
